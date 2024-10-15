@@ -27,13 +27,13 @@ public class CartView
 
         WriteLine($"Total: ${cart.TotalPrice}");
 
-        WriteLine("--------------");
+        WriteLine("----------------");
 
         WriteLine("1. Checkout");
         WriteLine("2. Add more items");
         WriteLine("3. Remove an item");
 
-        WriteLine("--------------");
+        WriteLine("----------------");
         Write("Enter your choice: ");
         string? choice = ReadLine();
         WriteLine();
@@ -42,7 +42,7 @@ public class CartView
             case "1":
                 OrderService.CreateOrder(cart);
                 WriteLine("Order created successfully");
-                WriteLine("-------------------");
+                WriteLine("----------------------------");
                 Thread.Sleep(2000);
                 break;
             case "2":
@@ -64,7 +64,7 @@ public class CartView
                             cart.Items.Remove(item);
                         }
                         WriteLine($"Product ID: {productId} has been removed from your cart");
-                        WriteLine("--------------");
+                        WriteLine("------------------------------------------------");
                         WriteLine();
                         Thread.Sleep(1000);
                         DisplayCart(cart);
@@ -72,13 +72,14 @@ public class CartView
                     else
                     {
                         WriteLine($"Product ID: {productId} not found in your cart");
-                        WriteLine("--------------");
+                        WriteLine("--------------------------------------");
                         WriteLine();
                         Thread.Sleep(1000);
                     }
                 }
-
                 break;
+            default:
+                return;
         }
     }
 

@@ -17,7 +17,7 @@ public class ProductService : ICRUD<Product>
         Database.Products.RemoveAll(p => p.ProductId == id);
     }
 
-    public static List<Product> GetAll()
+    public List<Product> GetAll()
     {
         return Database.Products;
     }
@@ -39,5 +39,10 @@ public class ProductService : ICRUD<Product>
             return updateProduct;
         }
         return null;
+    }
+
+    public int GetNextId()
+    {
+        return Database.Products.Count + 1;
     }
 }

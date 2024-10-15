@@ -1,12 +1,15 @@
 ﻿using ECommerceApp.Models;
+using ECommerceApp.Services;
 
 namespace ECommerceApp.Views;
 
 
 public static class ProductView
 {
-    public static void DisplayProducts(List<Product> products)
+    static readonly ProductService _productService = new();
+    public static void DisplayProducts()
     {
+        var products = _productService.GetAll();
         WriteLine("Products Available:");
         WriteLine("------------------");
 
@@ -28,7 +31,148 @@ public static class ProductView
         }
 
         WriteLine("Invalid input. Try again.");
+        Thread.Sleep(2000);
         return -1; // Return -1 if invalid
+    }
+
+    public static void AddProduct()
+    {
+        WriteLine("Add New Product");
+        WriteLine("--------------------");
+        Write("Name: ");
+        string? name = ReadLine();
+
+        Write("Description: ");
+        string? description = ReadLine();
+
+        Write("Price: ");
+        string? priceInput = ReadLine();
+
+        Write("Quantity: ");
+        string? quantityInput = ReadLine();
+
+        if (!decimal.TryParse(priceInput, out decimal price))
+        {
+            WriteLine("Invalid input. Try again.");
+            Thread.Sleep(2000);
+            AddProduct();
+        }
+
+        if (!int.TryParse(quantityInput, out int quantity))
+        {
+            WriteLine("Invalid input. Try again.");
+            Thread.Sleep(2000);
+            AddProduct();
+        }
+        if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(description) && price > 0 && quantity > 0)
+        {
+            var product = new Product()
+            {
+                ProductId = _productService.GetNextId(),
+                Name = name,
+                Description = description,
+                Price = price,
+                StockQuantity = quantity
+            };
+
+            _productService.Add(product);
+
+            WriteLine("Product added successfully.");
+            Thread.Sleep(2000);
+            return;
+        }
+
+        WriteLine("Invalid input. Try again.");
+        Thread.Sleep(2000);
+        AddProduct();
+    }
+
+    public static void RemoveProduct()
+    {
+        WriteLine("Remove Product");
+        WriteLine("--------------------");
+
+        Write("Product ID: ");
+        string? input = ReadLine();
+        WriteLine();
+        // Try to parse the input to an integer
+        if (!int.TryParse(input, out int productId))
+        {
+            WriteLine("Invalid input. Please enter a valid product ID.");
+            Thread.Sleep(2000);
+            RemoveProduct(); // Call the method again to allow the user to retry
+        }
+        _productService.Delete(productId);
+
+        WriteLine("Product removed successfully.");
+        Thread.Sleep(2000);
+    }
+
+    public static void UpdateProduct()
+    {
+        WriteLine("Update Product");
+        WriteLine("--------------------");
+
+        Write("Product ID: ");
+        string? input = ReadLine();
+        WriteLine();
+
+        if (!int.TryParse(input, out int productId))
+        {
+            WriteLine("Invalid input. Please enter a valid product ID.");
+            Thread.Sleep(2000);
+            UpdateProduct(); // Call the method again to allow the user to retry
+        }
+
+        Write("Name: ");
+        string? name = ReadLine();
+
+        Write("Description: ");
+        string? description = ReadLine();
+
+        Write("Price: ");
+        string? priceInput = ReadLine();
+
+        Write("Quantity: ");
+        string? quantityInput = ReadLine();
+
+        WriteLine();
+
+        if (!decimal.TryParse(priceInput, out decimal price))
+        {
+            WriteLine("Invalid input. Please enter a valid price.");
+            Thread.Sleep(2000);
+            UpdateProduct(); // Call the method again to allow the user to retry
+        }
+
+        if (!int.TryParse(quantityInput, out int quantity))
+        {
+            WriteLine("Invalid input. Please enter a valid quantity.");
+            Thread.Sleep(2000);
+            UpdateProduct(); // Call the method again to allow the user to retry
+        }
+
+        if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(description) && price > 0 && quantity > 0)
+        {
+            Product product = new()
+            {
+                ProductId = productId,
+                Name = name,
+                Description = description,
+                Price = price,
+                StockQuantity = quantity,
+            };
+
+            _productService.Update(product);
+
+            WriteLine("Product updated successfully.");
+            Thread.Sleep(2000);
+            return;
+        }
+
+        WriteLine("Invalid input. Please enter valid data.");
+        Thread.Sleep(2000);
+        UpdateProduct();
     }
 }
 

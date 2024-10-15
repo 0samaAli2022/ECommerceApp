@@ -15,7 +15,9 @@ public class AppViewController(AuthService authService)
         while (true)
         {
             Clear();
-            WriteLine("1. Sign In");
+            WriteLine("E-Commerce App");
+            WriteLine("--------------");
+            WriteLine("1. Login");
             WriteLine("2. Sign Up");
             WriteLine("3. Exit");
             WriteLine("--------------");
@@ -66,7 +68,7 @@ public class AppViewController(AuthService authService)
             else
             {
                 WriteLine("Invalid credentials. Try again.");
-                WriteLine("--------------");
+                WriteLine("-------------------------------");
                 WriteLine();
                 Thread.Sleep(2000);
             }
@@ -80,7 +82,7 @@ public class AppViewController(AuthService authService)
         {
             _authService.Signup(newUser);
             WriteLine($"Registration successful. Welcome, {newUser.Username}!");
-            WriteLine("--------------");
+            WriteLine("-----------------------------------------");
             WriteLine();
             Thread.Sleep(2000);
 
@@ -108,12 +110,16 @@ public class AppViewController(AuthService authService)
         {
             Clear();
             WriteLine("Welcome, " + _authService.CurrentUser!.Username + "!");
-            WriteLine("--------------");
+            WriteLine("------------------");
             WriteLine("1. View Products");
             WriteLine("2. View Cart");
             WriteLine("3. Order History");
             WriteLine("4. Logout");
-            WriteLine("--------------");
+            if (_authService.CurrentUser!.Username == "admin")
+            {
+                WriteLine("5. Admin Menu");
+            }
+            WriteLine("------------------");
             Write("Enter your choice: ");
             string? choice = ReadLine();
             WriteLine();
@@ -121,18 +127,29 @@ public class AppViewController(AuthService authService)
             {
                 case "1":
                     Clear();
-                    var products = ProductService.GetAll();
-                    ProductView.DisplayProducts(products);
+                    ProductView.DisplayProducts();
                     int productId = ProductView.SelectProduct();
                     while (productId != 0 && productId != -1)
                     {
-                        _cartService!.AddToCart(productId);
+                        try
+                        {
+                            _cartService!.AddToCart(productId);
+                        }
+                        catch
+                        {
+                            WriteLine("There is no product with that ID in the inventory.");
+                            Thread.Sleep(2000);
+                            Clear();
+                            ProductView.DisplayProducts();
+                            productId = ProductView.SelectProduct();
+                            continue;
+                        }
                         WriteLine($"Product ID: {productId} has been added to your cart.");
-                        WriteLine("------------------");
+                        WriteLine("----------------------------------------");
                         WriteLine();
                         Thread.Sleep(2000);
                         Clear();
-                        ProductView.DisplayProducts(products);
+                        ProductView.DisplayProducts();
                         productId = ProductView.SelectProduct();
                     }
                     break;
@@ -147,6 +164,10 @@ public class AppViewController(AuthService authService)
                 case "4":
                     _authService.Logout();
                     return; // Exit to the main menu
+
+                case "5":
+                    AdminView.DisplayAdminMenu();
+                    break;
                 default:
                     WriteLine("Invalid choice.");
                     WriteLine("--------------");

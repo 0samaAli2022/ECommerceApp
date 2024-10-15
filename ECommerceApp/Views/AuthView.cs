@@ -5,6 +5,7 @@ public static class AuthView
 {
     public static User? SignUp()
     {
+        Clear();
         WriteLine("Sign Up");
         WriteLine("--------------");
 
@@ -20,6 +21,10 @@ public static class AuthView
         Write("Address: ");
         string? address = ReadLine();
         WriteLine();
+        WriteLine("Signing in...");
+        WriteLine();
+        Thread.Sleep(2000);
+
         if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(email))
         {
             return new User
@@ -37,6 +42,7 @@ public static class AuthView
 
     public static (string? Username, string? Password) SignIn()
     {
+        Clear();
         WriteLine("Sign In");
         WriteLine("--------------");
 
@@ -46,6 +52,9 @@ public static class AuthView
         Write("Password: ");
         string? password = ReadLine();
         WriteLine();
+        WriteLine("Signing in...");
+        WriteLine();
+        Thread.Sleep(2000);
         return (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
             ? (username, password)
             : (null, null);

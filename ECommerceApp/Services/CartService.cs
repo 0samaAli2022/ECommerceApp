@@ -30,7 +30,13 @@ public class CartService
     public void AddToCart(int productId)
     {
         var cartItem = ShoppingCart.Items.FirstOrDefault(item => item.ProductId == productId);
-        var product = Database.Products.FirstOrDefault(p => p.ProductId == productId) ?? throw new InvalidOperationException("Product not found.");
+        var product = Database.Products.FirstOrDefault(p => p.ProductId == productId);
+
+        if (product == null)
+        {
+            throw new InvalidOperationException("Product not found.");
+        }
+
         if (cartItem != null)
         {
             // Product already in cart, increase quantity

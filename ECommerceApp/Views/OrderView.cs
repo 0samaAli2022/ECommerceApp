@@ -21,7 +21,7 @@ public static class OrderView
         foreach (var order in orders)
         {
             WriteLine($"{order.OrderId}. {order.OrderDate} - ${order.TotalAmount}");
-            WriteLine("------------------");
+            WriteLine("---------------------------------------");
             foreach (var item in order.OrderItems)
             {
                 WriteLine($"{item.ProductId}. {item.Product.Name} - Quantity: {item.Quantity} - Total Price: ${item.TotalPrice}");
