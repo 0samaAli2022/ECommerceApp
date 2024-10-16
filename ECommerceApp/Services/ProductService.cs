@@ -12,9 +12,9 @@ public class ProductService : ICRUD<Product>
         return product;
     }
 
-    public void Delete(int id)
+    public int Delete(int id)
     {
-        Database.Products.RemoveAll(p => p.ProductId == id);
+        return Database.Products.RemoveAll(p => p.ProductId == id);
     }
 
     public List<Product> GetAll()

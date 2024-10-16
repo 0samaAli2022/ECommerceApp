@@ -102,8 +102,14 @@ public static class ProductView
             Thread.Sleep(2000);
             RemoveProduct(); // Call the method again to allow the user to retry
         }
-        _productService.Delete(productId);
 
+        int result = _productService.Delete(productId);
+        if (result == 0)
+        {
+            WriteLine("There is no product with that ID.");
+            Thread.Sleep(2000);
+            RemoveProduct();
+        }
         WriteLine("Product removed successfully.");
         Thread.Sleep(2000);
     }
@@ -124,6 +130,15 @@ public static class ProductView
             UpdateProduct(); // Call the method again to allow the user to retry
         }
 
+        Product? productToUpdate = _productService.GetById(productId);
+
+        if (productToUpdate == null)
+        {
+            WriteLine("There is no product with that ID.");
+            Thread.Sleep(2000);
+            UpdateProduct();
+        }
+
         Write("Name: ");
         string? name = ReadLine();
 
@@ -132,18 +147,16 @@ public static class ProductView
 
         Write("Price: ");
         string? priceInput = ReadLine();
-
-        Write("Quantity: ");
-        string? quantityInput = ReadLine();
-
-        WriteLine();
-
         if (!decimal.TryParse(priceInput, out decimal price))
         {
             WriteLine("Invalid input. Please enter a valid price.");
             Thread.Sleep(2000);
             UpdateProduct(); // Call the method again to allow the user to retry
         }
+
+        Write("Quantity: ");
+        string? quantityInput = ReadLine();
+        WriteLine();
 
         if (!int.TryParse(quantityInput, out int quantity))
         {
