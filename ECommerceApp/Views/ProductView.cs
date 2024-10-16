@@ -11,13 +11,13 @@ public static class ProductView
     {
         var products = _productService.GetAll();
         WriteLine("Products Available:");
-        WriteLine("------------------");
+        WriteLine("--------------------------");
 
         foreach (var product in products)
         {
-            WriteLine($"{product.ProductId}. {product.Name} - ${product.Price}");
+            WriteLine($"{product.ProductId}. {product.Name} - ${product.Price} - {product.StockQuantity} in stock");
         }
-        WriteLine("------------------");
+        WriteLine("--------------------------");
     }
 
     public static int SelectProduct()

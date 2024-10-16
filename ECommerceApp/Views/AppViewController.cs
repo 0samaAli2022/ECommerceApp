@@ -135,9 +135,10 @@ public class AppViewController(AuthService authService)
                         {
                             _cartService!.AddToCart(productId);
                         }
-                        catch
+                        catch (Exception e)
                         {
-                            WriteLine("There is no product with that ID in the inventory.");
+
+                            WriteLine($"Something went wrong: {e.Message}");
                             Thread.Sleep(2000);
                             Clear();
                             ProductView.DisplayProducts();
@@ -145,7 +146,7 @@ public class AppViewController(AuthService authService)
                             continue;
                         }
                         WriteLine($"Product ID: {productId} has been added to your cart.");
-                        WriteLine("----------------------------------------");
+                        WriteLine("-------------------------------------------");
                         WriteLine();
                         Thread.Sleep(2000);
                         Clear();

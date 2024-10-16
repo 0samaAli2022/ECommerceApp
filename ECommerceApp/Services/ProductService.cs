@@ -36,6 +36,7 @@ public class ProductService : ICRUD<Product>
             updateProduct.Price = product.Price;
             updateProduct.Description = product.Description;
             updateProduct.Name = product.Name;
+            updateProduct.StockQuantity = product.StockQuantity;
             return updateProduct;
         }
         return null;

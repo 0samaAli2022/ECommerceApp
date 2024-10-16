@@ -40,6 +40,10 @@ public class CartService
         if (cartItem != null)
         {
             // Product already in cart, increase quantity
+            if (cartItem.Quantity == product.StockQuantity)
+            {
+                throw new InvalidOperationException("Product is out of stock.");
+            }
             cartItem.Quantity++;
             cartItem.TotalPrice = cartItem.Quantity * product.Price;
         }
@@ -96,7 +100,7 @@ public class CartService
         }
         else
         {
-            // If a cart already exists, update it (optional, depending on your requirements)
+            // If an existing cart exists, update it
             existingCart.Items = ShoppingCart.Items;
         }
         _authService.CurrentUser!.ShoppingCart = ShoppingCart;

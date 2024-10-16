@@ -26,7 +26,14 @@ public class OrderService(AuthService authService)
         };
 
         Database.Orders.Add(order);
-
+        foreach (var item in shoppingCart.Items)
+        {
+            item.Product.StockQuantity -= item.Quantity;
+            if (item.Product.StockQuantity == 0)
+            {
+                Database.Products.Remove(item.Product);
+            }
+        }
         // Clear shopping cart
         shoppingCart.Items.Clear();
     }

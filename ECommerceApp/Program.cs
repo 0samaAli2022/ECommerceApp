@@ -37,7 +37,7 @@ productService.Add(
         }
     );
 
-var ViewController = new AppViewController(auth);
+var viewController = new AppViewController(auth);
 
-ViewController.Start();
+viewController.Start();
 
