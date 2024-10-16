@@ -1,4 +1,4 @@
-﻿"2":
+﻿
 namespace ECommerceApp.Views;
 
 public static class AdminView
