@@ -6,16 +6,17 @@ AuthService auth = AuthService.Instance;
 
 ProductService productService = new();
 
+#region Add Products
 productService.Add(
-        new Product
-        {
-            ProductId = 1,
-            Name = "Laptop",
-            Description = "DELL laptop for gaming",
-            Price = 1000.00m,
-            StockQuantity = 10
-        }
-    );
+new Product
+{
+    ProductId = 1,
+    Name = "Laptop",
+    Description = "DELL laptop for gaming",
+    Price = 1000.00m,
+    StockQuantity = 10
+}
+);
 productService.Add(
         new Product
         {
@@ -36,6 +37,7 @@ productService.Add(
             StockQuantity = 2
         }
     );
+#endregion
 
 var viewController = new AppViewController(auth);
 

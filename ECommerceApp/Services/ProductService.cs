@@ -4,7 +4,7 @@ using ECommerceApp.Models;
 
 namespace ECommerceApp.Services;
 
-public class ProductService : ICRUD<Product>
+public class ProductService : ICrud<Product>
 {
     public Product Add(Product product)
     {
@@ -24,12 +24,12 @@ public class ProductService : ICRUD<Product>
 
     public Product? GetById(int id)
     {
-        return Database.Products.FirstOrDefault(p => p.ProductId == id);
+        return Database.Products.Find(p => p.ProductId == id);
     }
 
     public Product? Update(Product product)
     {
-        Product? updateProduct = Database.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
+        Product? updateProduct = Database.Products.Find(p => p.ProductId == product.ProductId);
         if (updateProduct != null)
         {
             updateProduct.ProductId = product.ProductId;
@@ -46,4 +46,5 @@ public class ProductService : ICRUD<Product>
     {
         return Database.Products.Count + 1;
     }
+
 }

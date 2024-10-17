@@ -113,7 +113,6 @@ public static class ProductView
         WriteLine("Product removed successfully.");
         Thread.Sleep(2000);
     }
-
     public static void UpdateProduct()
     {
         WriteLine("Update Product");
