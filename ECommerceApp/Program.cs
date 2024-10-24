@@ -5,7 +5,6 @@ using ECommerceApp.Views;
 AuthService auth = AuthService.Instance;
 
 ProductService productService = new();
-
 productService.Add(
         new Product
         {

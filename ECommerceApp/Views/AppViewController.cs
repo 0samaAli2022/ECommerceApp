@@ -36,7 +36,7 @@ public class AppViewController(AuthService authService)
                     return;
                 default:
                     WriteLine("Invalid choice.");
-                    WriteLine("--------------");
+                    WriteLine("---------------");
 
                     break;
             }
@@ -54,7 +54,7 @@ public class AppViewController(AuthService authService)
             if (user != null)
             {
                 WriteLine($"Welcome, {user.Username}!");
-                WriteLine("--------------");
+                WriteLine("---------------");
                 WriteLine();
                 Thread.Sleep(2000);
                 // Initialize the cart with the authenticated user's ID
@@ -167,6 +167,14 @@ public class AppViewController(AuthService authService)
                     return; // Exit to the main menu
 
                 case "5":
+                    if (_authService.CurrentUser!.Username != "admin")
+                    {
+                        WriteLine("Invalid choice.");
+                        WriteLine("--------------");
+                        WriteLine();
+                        Thread.Sleep(1000);
+                        break;
+                    }
                     AdminView.DisplayAdminMenu();
                     break;
                 default:

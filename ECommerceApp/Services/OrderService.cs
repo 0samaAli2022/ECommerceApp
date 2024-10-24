@@ -29,7 +29,7 @@ public class OrderService(AuthService authService)
         foreach (var item in shoppingCart.Items)
         {
             item.Product.StockQuantity -= item.Quantity;
-            if (item.Product.StockQuantity == 0)
+            if (item.Product.StockQuantity <= 0)
             {
                 Database.Products.Remove(item.Product);
             }
