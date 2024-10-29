@@ -1,5 +1,5 @@
 ﻿
-namespace ECommerceApp.Models;
+namespace ECommerceApp.Domain.Entities;
 
 public class Order
 {

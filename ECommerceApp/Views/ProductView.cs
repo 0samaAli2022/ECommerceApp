@@ -1,13 +1,14 @@
-﻿using ECommerceApp.Models;
-using ECommerceApp.Services;
+﻿using ECommerceApp.Application.Interfaces;
+using ECommerceApp.Domain.Entities;
 
 namespace ECommerceApp.Views;
 
 
-public static class ProductView
+public class ProductView(IProductService productService)
 {
-    static readonly ProductService _productService = new();
-    public static void DisplayProducts()
+    private readonly IProductService _productService = productService;
+
+    public void DisplayProducts()
     {
         var products = _productService.GetAll();
         WriteLine("Products Available:");
@@ -35,7 +36,7 @@ public static class ProductView
         return -1; // Return -1 if invalid
     }
 
-    public static void AddProduct()
+    public void AddProduct()
     {
         WriteLine("Add New Product");
         WriteLine("--------------------");
@@ -69,7 +70,6 @@ public static class ProductView
         {
             var product = new Product()
             {
-                ProductId = _productService.GetNextId(),
                 Name = name,
                 Description = description,
                 Price = price,
@@ -88,7 +88,7 @@ public static class ProductView
         AddProduct();
     }
 
-    public static void RemoveProduct()
+    public void RemoveProduct()
     {
         WriteLine("Remove Product");
         WriteLine("--------------------");
@@ -104,8 +104,9 @@ public static class ProductView
             RemoveProduct(); // Call the method again to allow the user to retry
         }
 
-        int result = _productService.Delete(productId);
-        if (result == 0)
+        Product? result = _productService.GetById(productId);
+        _productService.Delete(productId);
+        if (result == null)
         {
             WriteLine("There is no product with that ID.");
             Thread.Sleep(2000);
@@ -114,7 +115,7 @@ public static class ProductView
         WriteLine("Product removed successfully.");
         Thread.Sleep(2000);
     }
-    public static void UpdateProduct()
+    public void UpdateProduct()
     {
         WriteLine("Update Product");
         WriteLine("--------------------");

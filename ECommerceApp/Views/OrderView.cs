@@ -1,12 +1,14 @@
-﻿using ECommerceApp.Models;
+﻿using ECommerceApp.Application.Interfaces;
 
 namespace ECommerceApp.Views;
 
-public static class OrderView
+public class OrderView(IOrderService orderService)
 {
+    private readonly IOrderService _orderService = orderService;
 
-    public static void DisplayOrderHistory(List<Order> orders)
+    public void DisplayOrderHistory()
     {
+        var orders = _orderService.GetAll();
         if (orders.Count == 0)
         {
             WriteLine("No orders found.");

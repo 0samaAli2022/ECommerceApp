@@ -1,7 +1,6 @@
-﻿
-namespace ECommerceApp.Models;
+﻿namespace ECommerceApp.Domain.Entities;
 
-public class ShoppingCart(int cartId, int userId) // primary constructor
+public class ShoppingCart(int cartId, int userId)  // primary constructor
 {
     public int CartId { get; set; } = cartId;
     public int UserId { get; set; } = userId;

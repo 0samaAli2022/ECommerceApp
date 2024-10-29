@@ -1,13 +1,15 @@
-﻿
-using ECommerceApp.Models;
-using ECommerceApp.Services;
+﻿using ECommerceApp.Application.Interfaces;
+using ECommerceApp.Domain.Entities;
 
 namespace ECommerceApp.Views;
 
-public class CartView
+public class CartView(ICartService cartService, IOrderService orderService)
 {
-    public static void DisplayCart(ShoppingCart cart)
+    private readonly ICartService _cartService = cartService;
+    private readonly IOrderService _orderService = orderService;
+    public void DisplayCart()
     {
+        ShoppingCart cart = _cartService.GetCart();
         Clear();
         WriteLine("Cart:");
         WriteLine("--------------");
@@ -40,7 +42,7 @@ public class CartView
         switch (choice)
         {
             case "1":
-                OrderService.CreateOrder(cart);
+                _orderService.CreateOrder(cart);
                 WriteLine("Order created successfully");
                 WriteLine("----------------------------");
                 Thread.Sleep(2000);
@@ -54,20 +56,15 @@ public class CartView
                 WriteLine();
                 if (productId != null)
                 {
-                    var item = cart.Items.FirstOrDefault(i => i.ProductId == productId);
+                    var item = cart.Items.Find(i => i.ProductId == productId);
                     if (item != null)
                     {
-                        item.Quantity -= 1;
-                        item.TotalPrice -= item.Product.Price;
-                        if (item.Quantity <= 0)
-                        {
-                            cart.Items.Remove(item);
-                        }
+                        _cartService.RemoveFromCart(item.ProductId);
                         WriteLine($"Product ID: {productId} has been removed from your cart");
                         WriteLine("------------------------------------------------");
                         WriteLine();
                         Thread.Sleep(1000);
-                        DisplayCart(cart);
+                        DisplayCart();
                     }
                     else
                     {

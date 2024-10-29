@@ -1,9 +1,10 @@
 ﻿
 namespace ECommerceApp.Views;
 
-public static class AdminView
+public class AdminView(ProductView productView)
 {
-    public static void DisplayAdminMenu()
+    private readonly ProductView _productView = productView;
+    public void DisplayAdminMenu()
     {
         Clear();
         WriteLine("Admin Menu");
@@ -25,7 +26,7 @@ public static class AdminView
         {
             case "1":
                 Clear();
-                ProductView.DisplayProducts();
+                _productView.DisplayProducts();
                 WriteLine("1. Add product");
                 WriteLine("2. Update product");
                 WriteLine("3. Remove product");
@@ -43,13 +44,13 @@ public static class AdminView
                 switch (choice)
                 {
                     case "1":
-                        ProductView.AddProduct();
+                        _productView.AddProduct();
                         break;
                     case "2":
-                        ProductView.UpdateProduct();
+                        _productView.UpdateProduct();
                         break;
                     case "3":
-                        ProductView.RemoveProduct();
+                        _productView.RemoveProduct();
                         break;
                     default:
                         WriteLine("Invalid input. Try again.");

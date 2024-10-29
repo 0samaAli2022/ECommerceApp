@@ -1,14 +1,34 @@
-﻿using ECommerceApp.Models;
-using ECommerceApp.Services;
+﻿
+using ECommerceApp.Application.Interfaces;
+using ECommerceApp.Application.Services;
+using ECommerceApp.Domain.Entities;
+using ECommerceApp.Infrastructure.Interfaces;
+using ECommerceApp.Infrastructure.Repositories;
 using ECommerceApp.Views;
+using Microsoft.Extensions.DependencyInjection;
 
-AuthService auth = AuthService.Instance;
 
-ProductService productService = new();
+var serviceProvider = new ServiceCollection()
+    .AddSingleton<IUserRepository, UserRepository>()
+    .AddSingleton<IAuthService, AuthService>()
+    .AddSingleton<IProductRepository, ProductRepository>()
+    .AddSingleton<IProductService, ProductService>()
+    .AddSingleton<ICartRepository, CartRepository>()
+    .AddSingleton<ICartService, CartService>()
+    .AddSingleton<IOrderRepository, OrderRepository>()
+    .AddSingleton<IOrderService, OrderService>()
+    .AddSingleton<AppViewController>()
+    .AddSingleton<CartView>()
+    .AddSingleton<ProductView>()
+    .AddSingleton<OrderView>()
+    .AddSingleton<AdminView>()
+    .BuildServiceProvider();
+
+#region Add Products
+var productService = serviceProvider.GetRequiredService<IProductService>();
 productService.Add(
 new Product
 {
-    ProductId = 1,
     Name = "Laptop",
     Description = "DELL laptop for gaming",
     Price = 1000.00m,
@@ -18,7 +38,6 @@ new Product
 productService.Add(
         new Product
         {
-            ProductId = 2,
             Name = "Phone",
             Description = "Samsung phone",
             Price = 450.00m,
@@ -28,7 +47,6 @@ productService.Add(
 productService.Add(
         new Product
         {
-            ProductId = 3,
             Name = "Camera",
             Description = "Best camera in 2024",
             Price = 1500.00m,
@@ -37,7 +55,15 @@ productService.Add(
     );
 #endregion
 
-var viewController = new AppViewController(auth);
+try
+{
+    AppViewController viewController = serviceProvider.GetRequiredService<AppViewController>();
+    viewController.Start();
+}
+catch (Exception e)
+{
 
-viewController.Start();
+    Console.WriteLine($"An error occurred: {e.Message}");
+    Console.WriteLine($"Stack Trace: {e.StackTrace}");
+}
 

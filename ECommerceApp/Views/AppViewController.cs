@@ -1,14 +1,19 @@
 ﻿
-using ECommerceApp.Models;
-using ECommerceApp.Services;
+using ECommerceApp.Application.Interfaces;
+using ECommerceApp.Domain.Entities;
+
 
 namespace ECommerceApp.Views;
 
-public class AppViewController(AuthService authService)
+public class AppViewController(IAuthService authService, ICartService cartService,
+ CartView cartView, OrderView orderView, ProductView productView, AdminView adminView)
 {
-    private readonly AuthService _authService = authService;
-    private CartService? _cartService;
-    private OrderService? _orderService;
+    private readonly IAuthService _authService = authService;
+    private readonly ICartService _cartService = cartService;
+    private readonly CartView _cartView = cartView;
+    private readonly OrderView _orderView = orderView;
+    private readonly ProductView _productView = productView;
+    private readonly AdminView _adminView = adminView;
 
     public void Start()
     {
@@ -53,16 +58,11 @@ public class AppViewController(AuthService authService)
 
             if (user != null)
             {
+                _authService.CurrentUser!.ShoppingCart = _cartService.GetCart();
                 WriteLine($"Welcome, {user.Username}!");
                 WriteLine("---------------");
                 WriteLine();
                 Thread.Sleep(2000);
-                // Initialize the cart with the authenticated user's ID
-                _cartService = new CartService(_authService);
-
-                // Initialize the order service with the authenticated user's ID
-                _orderService = new OrderService(_authService);
-
                 AfterLoginFlow();
             }
             else
@@ -81,17 +81,11 @@ public class AppViewController(AuthService authService)
         if (newUser != null)
         {
             _authService.Signup(newUser);
+            _authService.CurrentUser!.ShoppingCart = _cartService.GetCart();
             WriteLine($"Registration successful. Welcome, {newUser.Username}!");
             WriteLine("-----------------------------------------");
             WriteLine();
             Thread.Sleep(2000);
-
-            // Initialize the cart with the new user's ID
-            _cartService = new CartService(_authService);
-
-            // Initialize the order service with the authenticated user's ID
-            _orderService = new OrderService(_authService);
-
             AfterLoginFlow();
         }
         else
@@ -115,7 +109,7 @@ public class AppViewController(AuthService authService)
             WriteLine("2. View Cart");
             WriteLine("3. Order History");
             WriteLine("4. Logout");
-            if (_authService.CurrentUser!.Username == "admin")
+            if (_authService.CurrentUser.Username == "admin")
             {
                 WriteLine("5. Admin Menu");
             }
@@ -127,13 +121,13 @@ public class AppViewController(AuthService authService)
             {
                 case "1":
                     Clear();
-                    ProductView.DisplayProducts();
+                    _productView.DisplayProducts();
                     int productId = ProductView.SelectProduct();
                     while (productId != 0 && productId != -1)
                     {
                         try
                         {
-                            _cartService!.AddToCart(productId);
+                            _cartService.AddToCart(productId);
                         }
                         catch (Exception e)
                         {
@@ -141,7 +135,7 @@ public class AppViewController(AuthService authService)
                             WriteLine($"Something went wrong: {e.Message}");
                             Thread.Sleep(2000);
                             Clear();
-                            ProductView.DisplayProducts();
+                            _productView.DisplayProducts();
                             productId = ProductView.SelectProduct();
                             continue;
                         }
@@ -150,17 +144,16 @@ public class AppViewController(AuthService authService)
                         WriteLine();
                         Thread.Sleep(2000);
                         Clear();
-                        ProductView.DisplayProducts();
+                        _productView.DisplayProducts();
                         productId = ProductView.SelectProduct();
                     }
                     break;
                 case "2":
-                    CartView.DisplayCart(_authService.CurrentUser!.ShoppingCart!);
+                    _cartView.DisplayCart();
                     break;
                 case "3":
                     Clear();
-                    var orders = _orderService!.GetAll();
-                    OrderView.DisplayOrderHistory(orders);
+                    _orderView.DisplayOrderHistory();
                     break;
                 case "4":
                     _authService.Logout();
@@ -175,7 +168,7 @@ public class AppViewController(AuthService authService)
                         Thread.Sleep(1000);
                         break;
                     }
-                    AdminView.DisplayAdminMenu();
+                    _adminView.DisplayAdminMenu();
                     break;
                 default:
                     WriteLine("Invalid choice.");

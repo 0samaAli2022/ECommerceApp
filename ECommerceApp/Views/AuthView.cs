@@ -1,5 +1,6 @@
-﻿using ECommerceApp.Data;
-using ECommerceApp.Models;
+﻿using ECommerceApp.Domain.Entities;
+
+namespace ECommerceApp.Views;
 
 public static class AuthView
 {
@@ -29,7 +30,6 @@ public static class AuthView
         {
             return new User
             {
-                UserId = Database.Users.Count + 1,
                 Username = username,
                 Password = password,
                 Email = email,
