@@ -48,21 +48,22 @@ public static class ProductView
         Write("Price: ");
         string? priceInput = ReadLine();
 
-        Write("Quantity: ");
-        string? quantityInput = ReadLine();
-
         if (!decimal.TryParse(priceInput, out decimal price))
         {
             WriteLine("Invalid input. Try again.");
             Thread.Sleep(2000);
-            AddProduct();
+            return;
         }
+
+        Write("Quantity: ");
+        string? quantityInput = ReadLine();
+
 
         if (!int.TryParse(quantityInput, out int quantity))
         {
             WriteLine("Invalid input. Try again.");
             Thread.Sleep(2000);
-            AddProduct();
+            return;
         }
         if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(description) && price > 0 && quantity > 0)
         {
@@ -108,7 +109,7 @@ public static class ProductView
         {
             WriteLine("There is no product with that ID.");
             Thread.Sleep(2000);
-            RemoveProduct();
+            return;
         }
         WriteLine("Product removed successfully.");
         Thread.Sleep(2000);
@@ -126,7 +127,7 @@ public static class ProductView
         {
             WriteLine("Invalid input. Please enter a valid product ID.");
             Thread.Sleep(2000);
-            UpdateProduct(); // Call the method again to allow the user to retry
+            return;
         }
 
         Product? productToUpdate = _productService.GetById(productId);
@@ -135,7 +136,7 @@ public static class ProductView
         {
             WriteLine("There is no product with that ID.");
             Thread.Sleep(2000);
-            UpdateProduct();
+            return;
         }
 
         Write("Name: ");
@@ -150,7 +151,7 @@ public static class ProductView
         {
             WriteLine("Invalid input. Please enter a valid price.");
             Thread.Sleep(2000);
-            UpdateProduct(); // Call the method again to allow the user to retry
+            return;
         }
 
         Write("Quantity: ");
@@ -161,7 +162,7 @@ public static class ProductView
         {
             WriteLine("Invalid input. Please enter a valid quantity.");
             Thread.Sleep(2000);
-            UpdateProduct(); // Call the method again to allow the user to retry
+            return;
         }
 
         if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(description) && price > 0 && quantity > 0)
