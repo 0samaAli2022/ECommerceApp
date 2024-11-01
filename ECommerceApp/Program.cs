@@ -5,65 +5,92 @@ using ECommerceApp.Domain.Entities;
 using ECommerceApp.Infrastructure.Interfaces;
 using ECommerceApp.Infrastructure.Repositories;
 using ECommerceApp.Views;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-
-var serviceProvider = new ServiceCollection()
-    .AddSingleton<IUserRepository, UserRepository>()
-    .AddSingleton<IAuthService, AuthService>()
-    .AddSingleton<IProductRepository, ProductRepository>()
-    .AddSingleton<IProductService, ProductService>()
-    .AddSingleton<ICartRepository, CartRepository>()
-    .AddSingleton<ICartService, CartService>()
-    .AddSingleton<IOrderRepository, OrderRepository>()
-    .AddSingleton<IOrderService, OrderService>()
-    .AddSingleton<AppViewController>()
-    .AddSingleton<CartView>()
-    .AddSingleton<ProductView>()
-    .AddSingleton<OrderView>()
-    .AddSingleton<AdminView>()
-    .BuildServiceProvider();
-
-#region Add Products
-var productService = serviceProvider.GetRequiredService<IProductService>();
-productService.Add(
-new Product
-{
-    Name = "Laptop",
-    Description = "DELL laptop for gaming",
-    Price = 1000.00m,
-    StockQuantity = 10
-}
-);
-productService.Add(
-        new Product
-        {
-            Name = "Phone",
-            Description = "Samsung phone",
-            Price = 450.00m,
-            StockQuantity = 4
-        }
-    );
-productService.Add(
-        new Product
-        {
-            Name = "Camera",
-            Description = "Best camera in 2024",
-            Price = 1500.00m,
-            StockQuantity = 2
-        }
-    );
-#endregion
+using Microsoft.Extensions.Hosting;
+using Serilog;
 
 try
 {
-    AppViewController viewController = serviceProvider.GetRequiredService<AppViewController>();
+    IHost host = AppStartup();
+    #region Add Products
+    var productService = host.Services.GetRequiredService<IProductService>();
+    productService.Add(
+    new Product
+    {
+        Name = "Laptop",
+        Description = "DELL laptop for gaming",
+        Price = 1000.00m,
+        StockQuantity = 10
+    }
+    );
+    productService.Add(
+            new Product
+            {
+                Name = "Phone",
+                Description = "Samsung phone",
+                Price = 450.00m,
+                StockQuantity = 4
+            }
+        );
+    productService.Add(
+            new Product
+            {
+                Name = "Camera",
+                Description = "Best camera in 2024",
+                Price = 1500.00m,
+                StockQuantity = 2
+            }
+        );
+    #endregion
+    AppViewController viewController = host.Services.GetRequiredService<AppViewController>();
     viewController.Start();
 }
 catch (Exception e)
 {
 
-    Console.WriteLine($"An error occurred: {e.Message}");
-    Console.WriteLine($"Stack Trace: {e.StackTrace}");
+    WriteLine($"An error occurred: {e.Message}");
+    WriteLine($"Stack Trace: {e.StackTrace}");
 }
 
+static void ConfigSetup(IConfigurationBuilder builder)
+{
+    builder.SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables();
+}
+
+static IHost AppStartup()
+{
+    var builder = new ConfigurationBuilder();
+    ConfigSetup(builder);
+
+    // definig Serilog Configs
+    Log.Logger = new LoggerConfiguration()
+        .ReadFrom.Configuration(builder.Build())
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .CreateLogger();
+
+    // Initiated the dependency injection container
+    var host = Host.CreateDefaultBuilder()
+        .UseSerilog()
+        .ConfigureServices((context, services) =>
+        {
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<AppViewController>();
+            services.AddScoped<CartView>();
+            services.AddScoped<ProductView>();
+            services.AddScoped<OrderView>();
+            services.AddScoped<AdminView>();
+        })
+        .Build();
+    return host;
+}
