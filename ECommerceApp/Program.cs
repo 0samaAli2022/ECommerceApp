@@ -4,7 +4,9 @@ using ECommerceApp.Application.Services;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Infrastructure.Interfaces;
 using ECommerceApp.Infrastructure.Repositories;
+using ECommerceApp.Infrastructure.SqliteDB;
 using ECommerceApp.Views;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -77,6 +79,9 @@ static IHost AppStartup()
         .UseSerilog()
         .ConfigureServices((context, services) =>
         {
+            services.AddDbContext<ECommerceDbContext>(
+                options => options.UseSqlite(context.Configuration.GetConnectionString("DefaultConnection"))
+                );
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
