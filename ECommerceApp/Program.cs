@@ -1,5 +1,4 @@
-﻿
-using ECommerceApp.Application.Interfaces;
+﻿using ECommerceApp.Application.Interfaces;
 using ECommerceApp.Application.Services;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Infrastructure.Interfaces;

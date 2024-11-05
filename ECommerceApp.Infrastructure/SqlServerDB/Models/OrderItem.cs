@@ -1,10 +1,12 @@
 ﻿namespace ECommerceApp.Infrastructure.SqlServerDB.Models;
-public class CartItem : BaseEntity<int>
+
+public class OrderItem : BaseEntity<int>
 {
+    public int OrderId { get; set; }
     public int ProductId { get; set; }
-    public int CartId { get; set; }
     public int Quantity { get; set; }
     public decimal TotalPrice { get; set; }
+
+    public Order Order { get; set; } = default!;
     public Product Product { get; set; } = default!;
-    public Cart Cart { get; set; } = default!;
 }
