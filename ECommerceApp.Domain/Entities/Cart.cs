@@ -1,4 +1,4 @@
-﻿namespace ECommerceApp.Infrastructure.SqliteDB.Models;
+﻿namespace ECommerceApp.Domain.Entities;
 
 public class Cart : BaseEntity<int>  // primary constructor
 {

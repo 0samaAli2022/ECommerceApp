@@ -9,44 +9,26 @@ public class CartService(IAuthService authService, ICartRepository cartRepositor
     private readonly IAuthService _authService = authService;
     private readonly ICartRepository _cartRepository = cartRepository;
 
-    public ShoppingCart GetCart() => _cartRepository.GetCart(_authService.CurrentUser!.UserId);
+    public Cart GetCart() => _cartRepository.GetCart(_authService.CurrentUser!.Id);
 
     // Adds a product to the cart, or increases quantity if already present
     public void AddToCart(int productId)
     {
-        _cartRepository.AddItemToCart(_authService.CurrentUser!.UserId, productId);
+        _cartRepository.AddItemToCart(_authService.CurrentUser!.Id, productId);
     }
 
     // Decreases product quantity or removes it if the quantity reaches zero
     public void RemoveFromCart(int productId)
     {
-        _cartRepository.RemoveItemFromCart(_authService.CurrentUser!.UserId, productId);
-        //SaveCart();
+        _cartRepository.RemoveItemFromCart(_authService.CurrentUser!.Id, productId);
     }
 
     // Clear all items from the cart
-    public void ClearCart() => _cartRepository.ClearCart(_authService.CurrentUser!.UserId);
-
-    // Save the cart, ensuring only one cart per user
-    //public void SaveCart()
-    //{
-    //    var existingCart = Database.ShoppingCarts.FirstOrDefault(c => c.UserId == ShoppingCart.UserId);
-    //    if (existingCart == null)
-    //    {
-    //        // If no cart exists for this user, add it
-    //        Database.ShoppingCarts.Add(ShoppingCart);
-    //    }
-    //    else
-    //    {
-    //        // If an existing cart exists, update it
-    //        existingCart.Items = ShoppingCart.Items;
-    //    }
-    //    _authService.CurrentUser!.ShoppingCart = ShoppingCart;
-    //}
+    public void ClearCart() => _cartRepository.ClearCart(_authService.CurrentUser!.Id);
 
     public IEnumerable<CartItem> GetCartItems()
     {
-        return _cartRepository.GetCartItems(_authService.CurrentUser!.UserId);
+        return _cartRepository.GetCartItems(_authService.CurrentUser!.Id);
     }
 }
 

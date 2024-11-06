@@ -22,7 +22,7 @@ public class OrderView(IOrderService orderService)
 
         foreach (var order in orders)
         {
-            WriteLine($"{order.OrderId}. {order.OrderDate} - ${order.TotalAmount}");
+            WriteLine($"{order.Id}. {order.OrderDate} - ${order.TotalAmount}");
             WriteLine("---------------------------------------");
             foreach (var item in order.OrderItems)
             {

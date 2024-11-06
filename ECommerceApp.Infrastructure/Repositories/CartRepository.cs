@@ -1,30 +1,40 @@
 ﻿using ECommerceApp.Domain.Entities;
-using ECommerceApp.Infrastructure.InMemoryDatabase;
 using ECommerceApp.Infrastructure.Interfaces;
+using ECommerceApp.Infrastructure.SqlServerDB;
 
 namespace ECommerceApp.Infrastructure.Repositories;
 
-public class CartRepository : ICartRepository
+public class CartRepository(ECommerceDbContext context) : ICartRepository
 {
-    public ShoppingCart GetCart(int userId)
+    private readonly ECommerceDbContext _context = context;
+    public Cart GetCart(int userId)
     {
-        ShoppingCart shoppingCart = Database.ShoppingCarts.Find(c => c.UserId == userId) ??
-            new ShoppingCart(GetNextId(), userId);
-        Database.ShoppingCarts.Add(shoppingCart);
-        return shoppingCart;
+        Cart? cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+        if (cart != null)
+        {
+            return cart;
+        }
+        cart = new Cart()
+        {
+            UserId = userId,
+            CreatedBy = userId,
+        };
+        _context.Carts.Add(cart);
+        _context.SaveChanges();
+        return cart;
     }
     public void AddItemToCart(int userId, int productId)
     {
         // Retrieve the user's shopping cart
-        ShoppingCart shoppingCart = Database.ShoppingCarts.Find(c => c.UserId == userId) ??
+        Cart shoppingCart = _context.Carts.FirstOrDefault(c => c.UserId == userId) ??
             throw new InvalidOperationException("Shopping cart not found for this user.");
 
         // Check if the product exists
-        Product product = Database.Products.Find(p => p.ProductId == productId) ??
+        Product product = _context.Products.FirstOrDefault(p => p.Id == productId) ??
             throw new InvalidOperationException("Product not found.");
 
         // Check if the item is already in the cart
-        CartItem? cartItem = shoppingCart.Items.Find(i => i.ProductId == productId);
+        CartItem? cartItem = shoppingCart.Items.FirstOrDefault(i => i.ProductId == productId);
         if (cartItem != null)
         {
             // Product already in cart, increase quantity
@@ -41,51 +51,53 @@ public class CartRepository : ICartRepository
             shoppingCart.Items.Add(new CartItem
             {
                 Product = product,
-                ProductId = product.ProductId,
+                ProductId = product.Id,
                 Quantity = 1,
-                TotalPrice = product.Price // Assuming total price per item here
+                TotalPrice = product.Price, // Assuming total price per item here
+                CreatedBy = userId,
             });
         }
+        _context.SaveChanges();
     }
     public void RemoveItemFromCart(int userId, int productId)
     {
         // Retrieve the user's shopping cart
-        ShoppingCart shoppingCart = Database.ShoppingCarts.Find(c => c.UserId == userId) ??
+        Cart shoppingCart = _context.Carts.FirstOrDefault(c => c.UserId == userId) ??
             throw new InvalidOperationException("Shopping cart not found for this user.");
 
-        Product product = Database.Products.Find(p => p.ProductId == productId) ?? throw new InvalidOperationException("Product not found.");
-        CartItem? cartItem = shoppingCart.Items.Find(item => item.ProductId == productId);
+        Product product = _context.Products.FirstOrDefault(p => p.Id == productId) ?? throw new InvalidOperationException("Product not found.");
+        CartItem cartItem = shoppingCart.Items.FirstOrDefault(item => item.ProductId == productId) ??
+            throw new InvalidOperationException("Product not found in cart.");
 
-        if (cartItem != null)
+
+        if (cartItem.Quantity > 1)
         {
-            if (cartItem.Quantity > 1)
-            {
-                // Decrease quantity if more than 1
-                cartItem.Quantity--;
-                cartItem.TotalPrice = cartItem.Quantity * product.Price;
-            }
-            else
-            {
-                // Remove item if quantity is 1 or less
-                shoppingCart.Items.Remove(cartItem);
-            }
+            // Decrease quantity if more than 1
+            cartItem.Quantity--;
+            cartItem.TotalPrice = cartItem.Quantity * product.Price;
         }
+        else
+        {
+            // Remove item if quantity is 1 or less
+            shoppingCart.Items.Remove(cartItem);
+        }
+
+
+        _context.SaveChanges();
     }
     public IEnumerable<CartItem> GetCartItems(int userId)
     {
-        return Database.ShoppingCarts.Find(c => c.UserId == userId)?.Items ?? [];
+        return _context.Carts.FirstOrDefault(c => c.UserId == userId)?.Items ?? [];
     }
     public void ClearCart(int userId)
     {
         // Retrieve the user's shopping cart
-        ShoppingCart shoppingCart = Database.ShoppingCarts.Find(c => c.UserId == userId) ??
+        Cart shoppingCart = _context.Carts.FirstOrDefault(c => c.UserId == userId) ??
             throw new InvalidOperationException("Shopping cart not found for this user.");
 
         // Clear the cart items
         shoppingCart.Items.Clear();
-    }
-    private int GetNextId()
-    {
-        return Database.ShoppingCarts.Count > 0 ? Database.ShoppingCarts.Max(c => c.CartId) + 1 : 1;
+
+        _context.SaveChanges();
     }
 }

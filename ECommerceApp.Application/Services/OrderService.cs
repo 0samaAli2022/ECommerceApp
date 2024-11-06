@@ -11,21 +11,24 @@ namespace ECommerceApp.Application.Services
         private readonly IProductService _productService = productService;
 
 
-        public void CreateOrder(ShoppingCart shoppingCart)
+        public void CreateOrder(Cart shoppingCart)
         {
+            var orderItems = shoppingCart.Items.Select(item => new OrderItem
+            {
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                TotalPrice = item.TotalPrice,
+                Product = item.Product,
+                CreatedBy = _authService.CurrentUser!.Id
+            }).ToList();
             // Save order to database
             Order order = new()
             {
                 UserId = shoppingCart.UserId,
                 TotalAmount = shoppingCart.TotalPrice,
-                OrderItems = shoppingCart.Items.Select(item => new CartItem
-                {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    TotalPrice = item.TotalPrice,
-                    Product = item.Product
-                }).ToList(), // Create a new list of OrderItem objects
-                OrderDate = DateTime.Now
+                OrderItems = orderItems, // Create a new list of OrderItem objects
+                OrderDate = DateTime.Now,
+                CreatedBy = _authService.CurrentUser!.Id
             };
 
             _orderRepository.Add(order); // Use repository to add order
@@ -44,7 +47,7 @@ namespace ECommerceApp.Application.Services
 
         public List<Order> GetAll()
         {
-            return _orderRepository.GetAllByUserId(_authService.CurrentUser!.UserId);
+            return _orderRepository.GetAllByUserId(_authService.CurrentUser!.Id);
         }
     }
 }

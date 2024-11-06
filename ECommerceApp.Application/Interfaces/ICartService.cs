@@ -4,7 +4,7 @@ namespace ECommerceApp.Application.Interfaces;
 
 public interface ICartService
 {
-    ShoppingCart GetCart();
+    Cart GetCart();
     void AddToCart(int productId);
     void RemoveFromCart(int productId);
     IEnumerable<CartItem> GetCartItems();

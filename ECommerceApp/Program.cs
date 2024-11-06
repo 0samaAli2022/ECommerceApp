@@ -3,7 +3,7 @@ using ECommerceApp.Application.Services;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Infrastructure.Interfaces;
 using ECommerceApp.Infrastructure.Repositories;
-using ECommerceApp.Infrastructure.SqliteDB;
+using ECommerceApp.Infrastructure.SqlServerDB;
 using ECommerceApp.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +22,8 @@ try
         Name = "Laptop",
         Description = "DELL laptop for gaming",
         Price = 1000.00m,
-        StockQuantity = 10
+        StockQuantity = 10,
+        CreatedBy = 1,
     }
     );
     productService.Add(
@@ -31,7 +32,8 @@ try
                 Name = "Phone",
                 Description = "Samsung phone",
                 Price = 450.00m,
-                StockQuantity = 4
+                StockQuantity = 4,
+                CreatedBy = 1,
             }
         );
     productService.Add(
@@ -40,7 +42,8 @@ try
                 Name = "Camera",
                 Description = "Best camera in 2024",
                 Price = 1500.00m,
-                StockQuantity = 2
+                StockQuantity = 2,
+                CreatedBy = 1,
             }
         );
     #endregion
@@ -79,7 +82,7 @@ static IHost AppStartup()
         .ConfigureServices((context, services) =>
         {
             services.AddDbContext<ECommerceDbContext>(
-                options => options.UseSqlite(context.Configuration.GetConnectionString("DefaultConnection"))
+                options => options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection"))
                 );
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();

@@ -16,7 +16,7 @@ public class ProductView(IProductService productService)
 
         foreach (var product in products)
         {
-            WriteLine($"{product.ProductId}. {product.Name} - ${product.Price} - {product.StockQuantity} in stock");
+            WriteLine($"{product.Id}. {product.Name} - ${product.Price} - {product.StockQuantity} in stock");
         }
         WriteLine("--------------------------");
     }
@@ -73,7 +73,8 @@ public class ProductView(IProductService productService)
                 Name = name,
                 Description = description,
                 Price = price,
-                StockQuantity = quantity
+                StockQuantity = quantity,
+                CreatedBy = 1
             };
 
             _productService.Add(product);
@@ -170,11 +171,12 @@ public class ProductView(IProductService productService)
         {
             Product product = new()
             {
-                ProductId = productId,
+                Id = productId,
                 Name = name,
                 Description = description,
                 Price = price,
                 StockQuantity = quantity,
+                CreatedBy = productToUpdate.CreatedBy,
             };
 
             _productService.Update(product);

@@ -1,46 +1,45 @@
 ﻿using ECommerceApp.Domain.Entities;
-using ECommerceApp.Infrastructure.InMemoryDatabase;
 using ECommerceApp.Infrastructure.Interfaces;
+using ECommerceApp.Infrastructure.SqlServerDB;
 
 namespace ECommerceApp.Infrastructure.Repositories;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository(ECommerceDbContext context) : IProductRepository
 {
+    private readonly ECommerceDbContext _context = context;
     public void Add(Product product)
     {
-        product.ProductId = GetNextId();
-        Database.Products.Add(product);
+        _context.Products.Add(product);
+        _context.SaveChanges();
     }
 
     public void Delete(int id)
     {
-        Database.Products.RemoveAll(p => p.ProductId == id);
+        Product? product = _context.Products.FirstOrDefault(p => p.Id == id) ?? throw new KeyNotFoundException($"Product with ID {id} not found.");
+        _context.Products.Remove(product);
+        _context.SaveChanges();
     }
 
     public List<Product> GetAll()
     {
-        return Database.Products;
+        return [.. _context.Products];
     }
 
     public Product GetById(int id)
     {
-        Product product = Database.Products.Find(p => p.ProductId == id) ??
+        Product product = _context.Products.FirstOrDefault(p => p.Id == id) ??
             throw new KeyNotFoundException($"Product with ID {id} not found.");
         return product;
     }
 
     public void Update(Product product)
     {
-        Product? updateProduct = Database.Products.Find(p => p.ProductId == product.ProductId) ??
-            throw new KeyNotFoundException($"Product with ID {product.ProductId} not found.");
+        Product? updateProduct = _context.Products.FirstOrDefault(p => p.Id == product.Id) ??
+            throw new KeyNotFoundException($"Product with ID {product.Id} not found.");
         updateProduct.Price = product.Price;
         updateProduct.Description = product.Description;
         updateProduct.Name = product.Name;
         updateProduct.StockQuantity = product.StockQuantity;
-    }
-
-    private int GetNextId()
-    {
-        return Database.Products.Count > 0 ? Database.Products.Max(p => p.ProductId) + 1 : 1;
+        _context.SaveChanges();
     }
 }

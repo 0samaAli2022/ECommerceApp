@@ -9,7 +9,7 @@ public class CartView(ICartService cartService, IOrderService orderService)
     private readonly IOrderService _orderService = orderService;
     public void DisplayCart()
     {
-        ShoppingCart cart = _cartService.GetCart();
+        Cart cart = _cartService.GetCart();
         Clear();
         WriteLine("Cart:");
         WriteLine("--------------");
@@ -52,11 +52,12 @@ public class CartView(ICartService cartService, IOrderService orderService)
             case "3":
                 Write("Enter the product ID to remove: ");
 
-                int? productId = int.Parse(ReadLine());
+                int productId = int.Parse(ReadLine()!);
                 WriteLine();
-                if (productId != null)
+
+                if (int.TryParse(productId.ToString(), out productId))
                 {
-                    var item = cart.Items.Find(i => i.ProductId == productId);
+                    var item = cart.Items.FirstOrDefault(i => i.ProductId == productId);
                     if (item != null)
                     {
                         _cartService.RemoveFromCart(item.ProductId);

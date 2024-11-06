@@ -1,4 +1,4 @@
-﻿namespace ECommerceApp.Infrastructure.SqlServerDB.Models;
+﻿namespace ECommerceApp.Domain.Entities;
 
 public class OrderItem : BaseEntity<int>
 {
