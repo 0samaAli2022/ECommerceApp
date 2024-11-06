@@ -1,5 +1,4 @@
-﻿
-namespace ECommerceApp.Domain.Entities;
+﻿namespace ECommerceApp.Domain.Entities;
 
 public class Order : BaseEntity<int>
 {

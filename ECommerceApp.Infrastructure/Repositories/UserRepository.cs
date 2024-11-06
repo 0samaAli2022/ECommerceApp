@@ -16,5 +16,7 @@ public class UserRepository(ECommerceDbContext context) : IUserRepository
     {
         _context.Users.Add(user);
         _context.SaveChanges();
+        user.CreatedBy = user.Id;
+        _context.SaveChanges();
     }
 }

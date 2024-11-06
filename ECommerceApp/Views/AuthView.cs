@@ -33,7 +33,8 @@ public static class AuthView
                 Username = username,
                 Password = password,
                 Email = email,
-                Address = address
+                Address = address,
+                CreatedBy = 1
             };
         }
 
