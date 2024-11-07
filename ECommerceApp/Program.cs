@@ -18,7 +18,6 @@ try
 }
 catch (Exception e)
 {
-
     WriteLine($"An error occurred: {e.Message}");
     WriteLine($"Stack Trace: {e.StackTrace}");
 }
@@ -39,7 +38,6 @@ static IHost AppStartup()
     Log.Logger = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Build())
         .Enrich.FromLogContext()
-        .WriteTo.Console()
         .CreateLogger();
 
     // Initiating the dependency injection container

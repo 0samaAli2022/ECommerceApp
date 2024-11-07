@@ -30,7 +30,7 @@ public class AuthService(IUserRepository userRepository, ILogger<AuthService> lo
 
     public void Logout()
     {
-        _logger.LogInformation("User {UserName} logged in.", currentUser!.Username);
+        _logger.LogInformation("User {UserName} logged out.", currentUser!.Username);
         currentUser = null;
         isLoggedIn = false;
     }
