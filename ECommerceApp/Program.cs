@@ -46,7 +46,7 @@ static IHost AppStartup()
         .ConfigureServices((context, services) =>
         {
             services.AddDbContext<ECommerceDbContext>(
-                options => options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection"))
+                options => options.UseLazyLoadingProxies().UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection"))
                 );
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();

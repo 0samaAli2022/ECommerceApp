@@ -9,6 +9,6 @@ public class Order : BaseEntity<int>
 
     [Column(TypeName = "decimal(18,2)")]
     public required decimal TotalAmount { get; set; }
-    public ICollection<OrderItem> OrderItems { get; set; } = [];
-    public User User { get; set; } = default!;
+    public virtual ICollection<OrderItem> OrderItems { get; set; } = [];
+    public virtual User User { get; set; } = default!;
 }

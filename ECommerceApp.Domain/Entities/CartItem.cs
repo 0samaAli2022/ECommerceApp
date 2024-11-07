@@ -9,6 +9,6 @@ public class CartItem : BaseEntity<int>
 
     [Column(TypeName = "decimal(18,2)")]
     public decimal TotalPrice { get; set; }
-    public Product Product { get; set; } = default!;
-    public Cart Cart { get; set; } = default!;
+    public virtual Product Product { get; set; } = default!;
+    public virtual Cart Cart { get; set; } = default!;
 }

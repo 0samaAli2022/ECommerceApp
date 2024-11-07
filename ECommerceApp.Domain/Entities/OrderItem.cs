@@ -11,6 +11,6 @@ public class OrderItem : BaseEntity<int>
     [Column(TypeName = "decimal(18,2)")]
     public decimal TotalPrice { get; set; }
 
-    public Order Order { get; set; } = default!;
-    public Product Product { get; set; } = default!;
+    public virtual Order Order { get; set; } = default!;
+    public virtual Product Product { get; set; } = default!;
 }
