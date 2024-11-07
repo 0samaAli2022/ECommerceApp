@@ -222,6 +222,63 @@ namespace ECommerceApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6388),
+                            CreatedBy = 1,
+                            Description = "High performance laptop",
+                            IsDeleted = false,
+                            Name = "Laptop",
+                            Price = 999.99m,
+                            StockQuantity = 50
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6399),
+                            CreatedBy = 1,
+                            Description = "Latest model smartphone",
+                            IsDeleted = false,
+                            Name = "Smartphone",
+                            Price = 699.99m,
+                            StockQuantity = 100
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6404),
+                            CreatedBy = 1,
+                            Description = "Noise-cancelling headphones",
+                            IsDeleted = false,
+                            Name = "Headphones",
+                            Price = 199.99m,
+                            StockQuantity = 200
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6408),
+                            CreatedBy = 1,
+                            Description = "Feature-rich smartwatch",
+                            IsDeleted = false,
+                            Name = "Smartwatch",
+                            Price = 299.99m,
+                            StockQuantity = 75
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6413),
+                            CreatedBy = 1,
+                            Description = "Lightweight and powerful tablet",
+                            IsDeleted = false,
+                            Name = "Tablet",
+                            Price = 399.99m,
+                            StockQuantity = 150
+                        });
                 });
 
             modelBuilder.Entity("ECommerceApp.Domain.Entities.User", b =>
@@ -265,6 +322,28 @@ namespace ECommerceApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6136),
+                            CreatedBy = 1,
+                            Email = "admin",
+                            IsDeleted = false,
+                            Password = "admin",
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6186),
+                            CreatedBy = 2,
+                            Email = "asd",
+                            IsDeleted = false,
+                            Password = "asd",
+                            Username = "osama"
+                        });
                 });
 
             modelBuilder.Entity("ECommerceApp.Domain.Entities.Cart", b =>

@@ -1,6 +1,7 @@
 ﻿using ECommerceApp.Domain.Entities;
 using ECommerceApp.Infrastructure.Interfaces;
 using ECommerceApp.Infrastructure.SqlServerDB;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.Infrastructure.Repositories;
 
@@ -9,7 +10,7 @@ public class CartRepository(ECommerceDbContext context) : ICartRepository
     private readonly ECommerceDbContext _context = context;
     public Cart GetCart(int userId)
     {
-        Cart? cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
+        Cart? cart = _context.Carts.Include(c => c.Items).ThenInclude(i => i.Product).FirstOrDefault(c => c.UserId == userId);
         if (cart != null)
         {
             return cart;
@@ -84,10 +85,6 @@ public class CartRepository(ECommerceDbContext context) : ICartRepository
 
 
         _context.SaveChanges();
-    }
-    public IEnumerable<CartItem> GetCartItems(int userId)
-    {
-        return _context.Carts.FirstOrDefault(c => c.UserId == userId)?.Items ?? [];
     }
     public void ClearCart(int userId)
     {

@@ -1,6 +1,5 @@
 ﻿using ECommerceApp.Application.Interfaces;
 using ECommerceApp.Application.Services;
-using ECommerceApp.Domain.Entities;
 using ECommerceApp.Infrastructure.Interfaces;
 using ECommerceApp.Infrastructure.Repositories;
 using ECommerceApp.Infrastructure.SqlServerDB;
@@ -14,39 +13,6 @@ using Serilog;
 try
 {
     IHost host = AppStartup();
-    #region Add Products
-    var productService = host.Services.GetRequiredService<IProductService>();
-    productService.Add(
-    new Product
-    {
-        Name = "Laptop",
-        Description = "DELL laptop for gaming",
-        Price = 1000.00m,
-        StockQuantity = 10,
-        CreatedBy = 1,
-    }
-    );
-    productService.Add(
-            new Product
-            {
-                Name = "Phone",
-                Description = "Samsung phone",
-                Price = 450.00m,
-                StockQuantity = 4,
-                CreatedBy = 1,
-            }
-        );
-    productService.Add(
-            new Product
-            {
-                Name = "Camera",
-                Description = "Best camera in 2024",
-                Price = 1500.00m,
-                StockQuantity = 2,
-                CreatedBy = 1,
-            }
-        );
-    #endregion
     AppViewController viewController = host.Services.GetRequiredService<AppViewController>();
     viewController.Start();
 }
@@ -69,14 +35,14 @@ static IHost AppStartup()
     var builder = new ConfigurationBuilder();
     ConfigSetup(builder);
 
-    // definig Serilog Configs
+    // defining Serilog Configs
     Log.Logger = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Build())
         .Enrich.FromLogContext()
         .WriteTo.Console()
         .CreateLogger();
 
-    // Initiated the dependency injection container
+    // Initiating the dependency injection container
     var host = Host.CreateDefaultBuilder()
         .UseSerilog()
         .ConfigureServices((context, services) =>

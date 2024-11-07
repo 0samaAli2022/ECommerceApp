@@ -31,7 +31,6 @@ namespace ECommerceApp.Application.Services
                 CreatedBy = _authService.CurrentUser!.Id
             };
 
-            _orderRepository.Add(order); // Use repository to add order
 
             foreach (var item in shoppingCart.Items)
             {
@@ -43,6 +42,7 @@ namespace ECommerceApp.Application.Services
             }
             // Clear shopping cart
             shoppingCart.Items.Clear();
+            _orderRepository.Add(order); // Use repository to add order to database and save changes
         }
 
         public List<Order> GetAll()

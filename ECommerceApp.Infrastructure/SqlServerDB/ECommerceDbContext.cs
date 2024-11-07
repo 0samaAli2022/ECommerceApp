@@ -50,5 +50,80 @@ public class ECommerceDbContext : DbContext
                  .WithMany(u => u.OrderItems)
                  .HasForeignKey(o => o.OrderId)
                  .OnDelete(DeleteBehavior.Cascade);
+
+        SeedUsers(modelBuilder);
+        SeedProducts(modelBuilder);
+
+    }
+    private void SeedProducts(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Product>().HasData(
+            new Product
+            {
+                Id = 1,
+                Name = "Laptop",
+                Description = "High performance laptop",
+                Price = 999.99m,
+                StockQuantity = 50,
+                CreatedBy = 1
+            },
+            new Product
+            {
+                Id = 2,
+                Name = "Smartphone",
+                Description = "Latest model smartphone",
+                Price = 699.99m,
+                StockQuantity = 100,
+                CreatedBy = 1
+            },
+            new Product
+            {
+                Id = 3,
+                Name = "Headphones",
+                Description = "Noise-cancelling headphones",
+                Price = 199.99m,
+                StockQuantity = 200,
+                CreatedBy = 1
+            },
+            new Product
+            {
+                Id = 4,
+                Name = "Smartwatch",
+                Description = "Feature-rich smartwatch",
+                Price = 299.99m,
+                StockQuantity = 75,
+                CreatedBy = 1
+            },
+            new Product
+            {
+                Id = 5,
+                Name = "Tablet",
+                Description = "Lightweight and powerful tablet",
+                Price = 399.99m,
+                StockQuantity = 150,
+                CreatedBy = 1
+            }
+        );
+    }
+    private void SeedUsers(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = 1,
+                Username = "admin",
+                Password = "admin",
+                Email = "admin",
+                CreatedBy = 1
+            },
+            new User
+            {
+                Id = 2,
+                Username = "osama",
+                Password = "asd",
+                Email = "asd",
+                CreatedBy = 2
+            }
+        );
     }
 }

@@ -26,9 +26,5 @@ public class CartService(IAuthService authService, ICartRepository cartRepositor
     // Clear all items from the cart
     public void ClearCart() => _cartRepository.ClearCart(_authService.CurrentUser!.Id);
 
-    public IEnumerable<CartItem> GetCartItems()
-    {
-        return _cartRepository.GetCartItems(_authService.CurrentUser!.Id);
-    }
 }
 

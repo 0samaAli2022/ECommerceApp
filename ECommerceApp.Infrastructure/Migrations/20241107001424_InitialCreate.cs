@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ECommerceApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -166,6 +168,27 @@ namespace ECommerceApp.Infrastructure.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "Price", "StockQuantity", "UpdatedAt", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6388), 1, "High performance laptop", false, "Laptop", 999.99m, 50, null, null },
+                    { 2, new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6399), 1, "Latest model smartphone", false, "Smartphone", 699.99m, 100, null, null },
+                    { 3, new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6404), 1, "Noise-cancelling headphones", false, "Headphones", 199.99m, 200, null, null },
+                    { 4, new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6408), 1, "Feature-rich smartwatch", false, "Smartwatch", 299.99m, 75, null, null },
+                    { 5, new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6413), 1, "Lightweight and powerful tablet", false, "Tablet", 399.99m, 150, null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Address", "CreatedAt", "CreatedBy", "Email", "IsDeleted", "Password", "UpdatedAt", "UpdatedBy", "Username" },
+                values: new object[,]
+                {
+                    { 1, null, new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6136), 1, "admin", false, "admin", null, null, "admin" },
+                    { 2, null, new DateTime(2024, 11, 7, 2, 14, 24, 155, DateTimeKind.Local).AddTicks(6186), 2, "asd", false, "asd", null, null, "osama" }
                 });
 
             migrationBuilder.CreateIndex(
