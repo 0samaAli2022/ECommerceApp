@@ -58,7 +58,6 @@ public class AppViewController(IAuthService authService, ICartService cartServic
 
             if (user != null)
             {
-                _authService.CurrentUser!.ShoppingCart = _cartService.GetCart();
                 WriteLine($"Welcome, {user.Username}!");
                 WriteLine("---------------");
                 WriteLine();
@@ -81,7 +80,6 @@ public class AppViewController(IAuthService authService, ICartService cartServic
         if (newUser != null)
         {
             _authService.Signup(newUser);
-            _authService.CurrentUser!.ShoppingCart = _cartService.GetCart();
             WriteLine($"Registration successful. Welcome, {newUser.Username}!");
             WriteLine("-----------------------------------------");
             WriteLine();

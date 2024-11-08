@@ -1,7 +1,6 @@
 ﻿using ECommerceApp.Domain.Entities;
 using ECommerceApp.Infrastructure.Interfaces;
 using ECommerceApp.Infrastructure.SqlServerDB;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.Infrastructure.Repositories;
 
@@ -10,7 +9,7 @@ public class CartRepository(ECommerceDbContext context) : ICartRepository
     private readonly ECommerceDbContext _context = context;
     public Cart GetCart(int userId)
     {
-        Cart? cart = _context.Carts.Include(c => c.Items).ThenInclude(i => i.Product).FirstOrDefault(c => c.UserId == userId);
+        Cart? cart = _context.Carts.FirstOrDefault(c => c.UserId == userId);
         if (cart != null)
         {
             return cart;
@@ -27,8 +26,7 @@ public class CartRepository(ECommerceDbContext context) : ICartRepository
     public void AddItemToCart(int userId, int productId)
     {
         // Retrieve the user's shopping cart
-        Cart shoppingCart = _context.Carts.FirstOrDefault(c => c.UserId == userId) ??
-            throw new InvalidOperationException("Shopping cart not found for this user.");
+        Cart shoppingCart = GetCart(userId);
 
         // Check if the product exists
         Product product = _context.Products.FirstOrDefault(p => p.Id == productId) ??
@@ -58,13 +56,15 @@ public class CartRepository(ECommerceDbContext context) : ICartRepository
                 CreatedBy = userId,
             });
         }
+        shoppingCart.UpdatedAt = DateTime.Now;
+        shoppingCart.UpdatedBy = userId;
+        shoppingCart.TotalPrice = shoppingCart.Items.Sum(i => i.TotalPrice);
         _context.SaveChanges();
     }
     public void RemoveItemFromCart(int userId, int productId)
     {
         // Retrieve the user's shopping cart
-        Cart shoppingCart = _context.Carts.FirstOrDefault(c => c.UserId == userId) ??
-            throw new InvalidOperationException("Shopping cart not found for this user.");
+        Cart shoppingCart = GetCart(userId);
 
         Product product = _context.Products.FirstOrDefault(p => p.Id == productId) ?? throw new InvalidOperationException("Product not found.");
         CartItem cartItem = shoppingCart.Items.FirstOrDefault(item => item.ProductId == productId) ??
@@ -82,18 +82,22 @@ public class CartRepository(ECommerceDbContext context) : ICartRepository
             // Remove item if quantity is 1 or less
             shoppingCart.Items.Remove(cartItem);
         }
-
-
+        shoppingCart.UpdatedAt = DateTime.Now;
+        shoppingCart.UpdatedBy = userId;
+        shoppingCart.TotalPrice = shoppingCart.Items.Sum(i => i.TotalPrice);
         _context.SaveChanges();
     }
     public void ClearCart(int userId)
     {
         // Retrieve the user's shopping cart
-        Cart shoppingCart = _context.Carts.FirstOrDefault(c => c.UserId == userId) ??
-            throw new InvalidOperationException("Shopping cart not found for this user.");
+        Cart shoppingCart = GetCart(userId);
 
         // Clear the cart items
         shoppingCart.Items.Clear();
+
+        shoppingCart.UpdatedAt = DateTime.Now;
+        shoppingCart.UpdatedBy = userId;
+        shoppingCart.TotalPrice = 0;
 
         _context.SaveChanges();
     }

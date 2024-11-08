@@ -15,7 +15,7 @@ public class ProductRepository(ECommerceDbContext context) : IProductRepository
 
     public void Delete(int id)
     {
-        Product? product = _context.Products.FirstOrDefault(p => p.Id == id) ?? throw new KeyNotFoundException($"Product with ID {id} not found.");
+        Product? product = GetById(id);
         _context.Products.Remove(product);
         _context.SaveChanges();
     }
@@ -34,8 +34,7 @@ public class ProductRepository(ECommerceDbContext context) : IProductRepository
 
     public void Update(Product product)
     {
-        Product? updateProduct = _context.Products.FirstOrDefault(p => p.Id == product.Id) ??
-            throw new KeyNotFoundException($"Product with ID {product.Id} not found.");
+        Product? updateProduct = GetById(product.Id);
         updateProduct.Price = product.Price;
         updateProduct.Description = product.Description;
         updateProduct.Name = product.Name;

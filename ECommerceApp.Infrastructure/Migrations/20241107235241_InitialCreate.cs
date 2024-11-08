@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -62,6 +61,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
@@ -175,11 +175,11 @@ namespace ECommerceApp.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "Price", "StockQuantity", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 7, 16, 25, 59, 172, DateTimeKind.Local).AddTicks(3181), 1, "High performance laptop", false, "Laptop", 999.99m, 50, null, null },
-                    { 2, new DateTime(2024, 11, 7, 16, 25, 59, 172, DateTimeKind.Local).AddTicks(3195), 1, "Latest model smartphone", false, "Smartphone", 699.99m, 100, null, null },
-                    { 3, new DateTime(2024, 11, 7, 16, 25, 59, 172, DateTimeKind.Local).AddTicks(3200), 1, "Noise-cancelling headphones", false, "Headphones", 199.99m, 200, null, null },
-                    { 4, new DateTime(2024, 11, 7, 16, 25, 59, 172, DateTimeKind.Local).AddTicks(3205), 1, "Feature-rich smartwatch", false, "Smartwatch", 299.99m, 75, null, null },
-                    { 5, new DateTime(2024, 11, 7, 16, 25, 59, 172, DateTimeKind.Local).AddTicks(3210), 1, "Lightweight and powerful tablet", false, "Tablet", 399.99m, 150, null, null }
+                    { 1, new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1889), 1, "High performance laptop", false, "Laptop", 999.99m, 50, null, null },
+                    { 2, new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1895), 1, "Latest model smartphone", false, "Smartphone", 699.99m, 100, null, null },
+                    { 3, new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1897), 1, "Noise-cancelling headphones", false, "Headphones", 199.99m, 200, null, null },
+                    { 4, new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1899), 1, "Feature-rich smartwatch", false, "Smartwatch", 299.99m, 75, null, null },
+                    { 5, new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1900), 1, "Lightweight and powerful tablet", false, "Tablet", 399.99m, 150, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -187,8 +187,8 @@ namespace ECommerceApp.Infrastructure.Migrations
                 columns: new[] { "Id", "Address", "CreatedAt", "CreatedBy", "Email", "IsDeleted", "Password", "UpdatedAt", "UpdatedBy", "Username" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2024, 11, 7, 16, 25, 59, 172, DateTimeKind.Local).AddTicks(2829), 1, "admin", false, "admin", null, null, "admin" },
-                    { 2, null, new DateTime(2024, 11, 7, 16, 25, 59, 172, DateTimeKind.Local).AddTicks(2896), 2, "asd", false, "asd", null, null, "osama" }
+                    { 1, null, new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1753), 1, "admin", false, "admin", null, null, "admin" },
+                    { 2, null, new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1797), 2, "asd", false, "asd", null, null, "osama" }
                 });
 
             migrationBuilder.CreateIndex(
