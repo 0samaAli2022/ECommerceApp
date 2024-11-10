@@ -5,5 +5,5 @@ namespace ECommerceApp.Infrastructure.Interfaces;
 public interface IOrderRepository
 {
     void Add(Order order);
-    List<Order> GetAllByUserId(int userId);
+    List<Order> GetAll(User user);
 }

@@ -89,7 +89,7 @@ public class AppViewController(IAuthService authService, ICartService cartServic
         else
         {
             WriteLine("Sign-up failed. Try again.");
-            WriteLine("--------------");
+            WriteLine("---------------------------");
             WriteLine();
             Thread.Sleep(2000);
 
@@ -102,7 +102,7 @@ public class AppViewController(IAuthService authService, ICartService cartServic
         {
             Clear();
             WriteLine("Welcome, " + _authService.CurrentUser!.Username + "!");
-            WriteLine("------------------");
+            WriteLine("---------------------");
             WriteLine("1. View Products");
             WriteLine("2. View Cart");
             WriteLine("3. Order History");
@@ -138,7 +138,7 @@ public class AppViewController(IAuthService authService, ICartService cartServic
                             continue;
                         }
                         WriteLine($"Product ID: {productId} has been added to your cart.");
-                        WriteLine("-------------------------------------------");
+                        WriteLine("---------------------------------------------------");
                         WriteLine();
                         Thread.Sleep(2000);
                         Clear();
@@ -161,7 +161,7 @@ public class AppViewController(IAuthService authService, ICartService cartServic
                     if (_authService.CurrentUser!.Username != "admin")
                     {
                         WriteLine("Invalid choice.");
-                        WriteLine("--------------");
+                        WriteLine("----------------");
                         WriteLine();
                         Thread.Sleep(1000);
                         break;
@@ -170,7 +170,7 @@ public class AppViewController(IAuthService authService, ICartService cartServic
                     break;
                 default:
                     WriteLine("Invalid choice.");
-                    WriteLine("--------------");
+                    WriteLine("----------------");
                     WriteLine();
                     Thread.Sleep(1000);
                     break;

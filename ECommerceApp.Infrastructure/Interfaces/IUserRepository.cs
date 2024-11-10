@@ -4,6 +4,6 @@ namespace ECommerceApp.Infrastructure.Interfaces;
 
 public interface IUserRepository
 {
-    User? GetUserByCredentials(string username, string password);
+    User? GetUserByCredentials(string username);
     void AddUser(User user);
 }

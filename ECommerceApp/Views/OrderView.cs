@@ -26,7 +26,7 @@ public class OrderView(IOrderService orderService)
             WriteLine("---------------------------------------");
             foreach (var item in order.OrderItems)
             {
-                WriteLine($"{item.ProductId}. {item.Product.Name} - Quantity: {item.Quantity} - Total Price: ${item.TotalPrice}");
+                WriteLine($"{item.ProductId}. {item.Product!.Name} - Quantity: {item.Quantity} - Total Price: ${item.TotalPrice}");
             }
             WriteLine();
         }

@@ -1,12 +1,14 @@
 ﻿using ECommerceApp.Application.Interfaces;
 using ECommerceApp.Domain.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace ECommerceApp.Views;
 
 
-public class ProductView(IProductService productService)
+public class ProductView(IProductService productService, ILogger<ProductView> logger)
 {
     private readonly IProductService _productService = productService;
+    private readonly ILogger<ProductView> _logger = logger;
 
     public void DisplayProducts()
     {
@@ -78,7 +80,7 @@ public class ProductView(IProductService productService)
             };
 
             _productService.Add(product);
-
+            _logger.LogInformation("Product added: {Name} By UserID: {CreatedBy}", name, product.CreatedBy);
             WriteLine("Product added successfully.");
             Thread.Sleep(2000);
             return;
@@ -105,14 +107,15 @@ public class ProductView(IProductService productService)
             RemoveProduct(); // Call the method again to allow the user to retry
         }
 
-        Product? result = _productService.GetById(productId);
-        _productService.Delete(productId);
-        if (result == null)
+        Product? product = _productService.GetById(productId);
+        if (product == null)
         {
             WriteLine("There is no product with that ID.");
             Thread.Sleep(2000);
             return;
         }
+        _logger.LogInformation("Product removed: {Name} By UserID: {DeletedBy}", product.Name, 1);
+        _productService.Delete(productId);
         WriteLine("Product removed successfully.");
         Thread.Sleep(2000);
     }
@@ -177,9 +180,10 @@ public class ProductView(IProductService productService)
                 Price = price,
                 StockQuantity = quantity,
                 CreatedBy = productToUpdate.CreatedBy,
+                UpdatedBy = 1
             };
-
             _productService.Update(product);
+            _logger.LogInformation("Product updated: {Name} By UserID: {UpdatedBy}", product.Name, product.UpdatedBy);
 
             WriteLine("Product updated successfully.");
             Thread.Sleep(2000);

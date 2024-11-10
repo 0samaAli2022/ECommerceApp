@@ -8,7 +8,6 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 {
     private readonly IProductRepository _productRepository = productRepository;
 
-
     public List<Product> GetAll()
     {
         return _productRepository.GetAll();

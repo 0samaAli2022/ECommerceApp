@@ -37,7 +37,6 @@ static IHost AppStartup()
     // defining Serilog Configs
     Log.Logger = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Build())
-        .Enrich.FromLogContext()
         .CreateLogger();
 
     // Initiating the dependency injection container

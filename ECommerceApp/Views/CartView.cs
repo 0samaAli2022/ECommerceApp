@@ -24,7 +24,7 @@ public class CartView(ICartService cartService, IOrderService orderService)
 
         foreach (var item in cart.Items)
         {
-            WriteLine($"{item.ProductId}. {item.Product.Name} x {item.Quantity} - ${item.TotalPrice}");
+            WriteLine($"{item.ProductId}. {item.Product!.Name} x {item.Quantity} - ${item.TotalPrice}");
         }
 
         WriteLine($"Total: ${cart.TotalPrice}");
@@ -42,7 +42,7 @@ public class CartView(ICartService cartService, IOrderService orderService)
         switch (choice)
         {
             case "1":
-                _orderService.CreateOrder(cart);
+                _orderService.CreateOrder();
                 WriteLine("Order created successfully");
                 WriteLine("----------------------------");
                 Thread.Sleep(2000);
@@ -57,22 +57,22 @@ public class CartView(ICartService cartService, IOrderService orderService)
 
                 if (int.TryParse(productId.ToString(), out productId))
                 {
-                    var item = cart.Items.FirstOrDefault(i => i.ProductId == productId);
-                    if (item != null)
+                    try
                     {
-                        _cartService.RemoveFromCart(item.ProductId);
+                        _cartService.RemoveFromCart(productId);
                         WriteLine($"Product ID: {productId} has been removed from your cart");
-                        WriteLine("------------------------------------------------");
+                        WriteLine("----------------------------------------------------");
                         WriteLine();
                         Thread.Sleep(1000);
                         DisplayCart();
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        WriteLine($"Product ID: {productId} not found in your cart");
+                        WriteLine($"Error: {ex.Message}");
                         WriteLine("--------------------------------------");
                         WriteLine();
                         Thread.Sleep(1000);
+                        DisplayCart();
                     }
                 }
                 break;

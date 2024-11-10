@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20241107235241_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241109145235_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,7 +236,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1889),
+                            CreatedAt = new DateTime(2024, 11, 9, 16, 52, 35, 221, DateTimeKind.Local).AddTicks(4778),
                             CreatedBy = 1,
                             Description = "High performance laptop",
                             IsDeleted = false,
@@ -247,7 +247,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1895),
+                            CreatedAt = new DateTime(2024, 11, 9, 16, 52, 35, 221, DateTimeKind.Local).AddTicks(4784),
                             CreatedBy = 1,
                             Description = "Latest model smartphone",
                             IsDeleted = false,
@@ -258,7 +258,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1897),
+                            CreatedAt = new DateTime(2024, 11, 9, 16, 52, 35, 221, DateTimeKind.Local).AddTicks(4786),
                             CreatedBy = 1,
                             Description = "Noise-cancelling headphones",
                             IsDeleted = false,
@@ -269,7 +269,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1899),
+                            CreatedAt = new DateTime(2024, 11, 9, 16, 52, 35, 221, DateTimeKind.Local).AddTicks(4787),
                             CreatedBy = 1,
                             Description = "Feature-rich smartwatch",
                             IsDeleted = false,
@@ -280,7 +280,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1900),
+                            CreatedAt = new DateTime(2024, 11, 9, 16, 52, 35, 221, DateTimeKind.Local).AddTicks(4794),
                             CreatedBy = 1,
                             Description = "Lightweight and powerful tablet",
                             IsDeleted = false,
@@ -336,7 +336,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1753),
+                            CreatedAt = new DateTime(2024, 11, 9, 16, 52, 35, 221, DateTimeKind.Local).AddTicks(4647),
                             CreatedBy = 1,
                             Email = "admin",
                             IsDeleted = false,
@@ -346,7 +346,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 11, 8, 1, 52, 40, 999, DateTimeKind.Local).AddTicks(1797),
+                            CreatedAt = new DateTime(2024, 11, 9, 16, 52, 35, 221, DateTimeKind.Local).AddTicks(4696),
                             CreatedBy = 2,
                             Email = "asd",
                             IsDeleted = false,
@@ -436,8 +436,7 @@ namespace ECommerceApp.Infrastructure.Migrations
                 {
                     b.Navigation("Orders");
 
-                    b.Navigation("ShoppingCart")
-                        .IsRequired();
+                    b.Navigation("ShoppingCart");
                 });
 #pragma warning restore 612, 618
         }

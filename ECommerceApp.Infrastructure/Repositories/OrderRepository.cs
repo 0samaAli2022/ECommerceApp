@@ -13,8 +13,8 @@ public class OrderRepository(ECommerceDbContext context) : IOrderRepository
         _context.SaveChanges();
     }
 
-    public List<Order> GetAllByUserId(int userId)
+    public List<Order> GetAll(User user)
     {
-        return _context.Orders.Where(order => order.UserId == userId).ToList();
+        return user.Orders!.ToList();
     }
 }

@@ -5,6 +5,6 @@ public class User : BaseEntity<int>
     public required string Email { get; set; }
     public required string Password { get; set; }
     public string? Address { get; set; }
-    public virtual Cart ShoppingCart { get; set; } = null!;
-    public virtual ICollection<Order> Orders { get; set; } = null!;
+    public virtual Cart? ShoppingCart { get; set; }
+    public virtual ICollection<Order> Orders { get; set; } = [];
 }

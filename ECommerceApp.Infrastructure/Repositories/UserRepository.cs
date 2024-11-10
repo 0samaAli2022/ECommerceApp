@@ -7,9 +7,9 @@ namespace ECommerceApp.Infrastructure.Repositories;
 public class UserRepository(ECommerceDbContext context) : IUserRepository
 {
     private readonly ECommerceDbContext _context = context;
-    public User? GetUserByCredentials(string username, string password)
+    public User? GetUserByCredentials(string username)
     {
-        return _context.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+        return _context.Users.FirstOrDefault(u => u.Username == username);
     }
 
     public void AddUser(User user)

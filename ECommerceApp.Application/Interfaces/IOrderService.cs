@@ -4,6 +4,6 @@ namespace ECommerceApp.Application.Interfaces;
 
 public interface IOrderService
 {
-    void CreateOrder(Cart shoppingCart);
+    void CreateOrder();
     List<Order> GetAll();
 }
